@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
 """
-Task 1: Handle Database Connections with a Decorator
+Repo: alx-backend-python
+Directory: python-decorators-0x01
+File: 1-with_db_connection.py
+
+Handles database connections automatically using a decorator.
 """
 
 import sqlite3
 import functools
 
-
 def with_db_connection(func):
-    """Decorator to handle opening and closing database connections."""
-
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        conn = sqlite3.connect("users.db")
+        conn = sqlite3.connect('users.db')
         try:
             return func(conn, *args, **kwargs)
         finally:
             conn.close()
     return wrapper
-
 
 @with_db_connection
 def get_user_by_id(conn, user_id):
@@ -26,7 +26,6 @@ def get_user_by_id(conn, user_id):
     cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
     return cursor.fetchone()
 
-
-# Fetch user by ID with automatic connection handling
-user = get_user_by_id(user_id=1)
-print(user)
+if __name__ == "__main__":
+    user = get_user_by_id(user_id=1)
+    print(user)
